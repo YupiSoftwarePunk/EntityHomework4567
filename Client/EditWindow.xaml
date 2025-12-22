@@ -1,0 +1,46 @@
+﻿<Window x:Class="Client.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Редактирование" Height="400" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Редактирование" VerticalAlignment="Center" 
+               HorizontalAlignment="Center" FontSize="20" Margin="20"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Margin="10">
+                <TextBlock Text="Название" Margin="5"/>
+                <TextBox x:Name="NameInput" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Margin="10">
+                <TextBlock Text="Компания" Margin="5"/>
+                <ComboBox x:Name="CompanyInput" Height="20"
+                          SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <StackPanel Margin="10">
+                <TextBlock Text="Цена" Margin="5"/>
+                <TextBox x:Name="PriceInput" Height="20"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <Button x:Name="EditButton" Click="EditButtonClick" Height="40"
+                Content="Изменить" VerticalAlignment="Center" Width="150" 
+                        HorizontalAlignment="Center" Margin="20"/>
+        </StackPanel>
+    </Grid>
+</Window>
