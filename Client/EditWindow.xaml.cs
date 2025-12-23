@@ -25,17 +25,30 @@ namespace Client
         HttpClientService httpService;
         Phone _tempPhone;
         MainWindow mainWindow;
+
         public EditWindow(Phone phone, HttpClientService http)
         {
             InitializeComponent();
+
             _tempPhone = phone;
-            mainWindow = new MainWindow();
             httpService = http;
 
-            CompanyInput.ItemsSource = (System.Collections.IEnumerable)httpService.GetCompanies();
+            _ = LoadCompanies();
+
             NameInput.Text = phone.Title;
             CompanyInput.SelectedValue = phone.CompanyEntity.Id;
             PriceInput.Text = phone.Price.ToString();
+        }
+
+
+        private async Task LoadCompanies()
+        {
+            var companies = await httpService.GetCompanies();
+
+            CompanyInput.ItemsSource = companies;
+            CompanyInput.DisplayMemberPath = "Title";
+            CompanyInput.SelectedValuePath = "Id";
+            CompanyInput.SelectedValue = _tempPhone.CompanyId;
         }
 
 
@@ -43,12 +56,13 @@ namespace Client
         {
             if (!ValidateInput(out string errorMessage))
             {
-                mainWindow.ShowErrorMessage(errorMessage);
+                (this.Owner as MainWindow)?.ShowErrorMessage(errorMessage); 
                 return;
             }
 
             await httpService.EditPhone(new Phone
             {
+                Id = _tempPhone.Id,
                 Title = NameInput.Text,
                 CompanyId = (int)CompanyInput.SelectedValue,
                 Price = Convert.ToDecimal(PriceInput.Text)

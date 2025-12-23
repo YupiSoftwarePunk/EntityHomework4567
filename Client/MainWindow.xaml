@@ -28,7 +28,8 @@
                             <StackPanel Orientation="Horizontal">
                                 <Button Height="25" Width="25" 
                                         Background="Transparent" 
-                                        BorderThickness="0" Click="EditClick">
+                                        BorderThickness="0" Click="EditClick"
+                                        PreviewMouseDown="SelectRowOnClick">
                                     <Image Source="/Resources/edit.png"/>
                                 </Button>
                                 <Button Height="25" Width="25" 

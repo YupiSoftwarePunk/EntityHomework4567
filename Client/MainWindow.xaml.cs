@@ -30,22 +30,29 @@ namespace Client
 
         public async void EditClick(object sender, RoutedEventArgs e)
         {
-            //var phone = mainDataGridView.SelectedItem as Phone;
-            //if (phone == null) return;
             HideErrorMessage();
 
-            Phone phone = new Phone();
-            if (phone != null)
-            {
-                EditWindow edit = new EditWindow(phone, httpService);
-                edit.Owner = this;
-                edit.ShowDialog();
-            }
-            else
+            if (mainDataGridView.SelectedItem is not Phone phone)
             {
                 ShowErrorMessage("Выберите элемент для изменения");
+                return;
             }
+
+            var edit = new EditWindow(phone, httpService);
+            edit.Owner = this;
+            edit.ShowDialog();
+
             await RefreshTable();
+        }
+
+
+        private void SelectRowOnClick(object sender, RoutedEventArgs e)
+        {
+            var row = ItemsControl.ContainerFromElement(mainDataGridView, (DependencyObject)e.OriginalSource) as DataGridRow;
+            if (row != null)
+            {
+                mainDataGridView.SelectedItem = row.Item;
+            }
         }
 
 
@@ -253,6 +260,8 @@ namespace Client
 
         public async Task RefreshTable()
         {
+            HideErrorMessage();
+
             mainDataGridView.ItemsSource = null;
             var phones = await httpService.GetPhones();
 
