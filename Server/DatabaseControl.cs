@@ -34,7 +34,7 @@ namespace Server
         {
             using (DbAppContext context = new DbAppContext())
             {
-                Phone phone1 = context.Phones.FirstOrDefault(phone => phone.Id == phone.Id);
+                Phone phone1 = context.Phones.FirstOrDefault(p => p.Id == phone.Id);
 
                 phone1.Title = phone.Title;
                 phone1.Price = phone.Price;

@@ -21,7 +21,48 @@ namespace Server
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Phone>().HasOne(p  => p.CompanyEntity)
-                .WithMany(p => p.PhoneEntities);
+                .WithMany(p => p.PhoneEntities)
+                .HasForeignKey(p => p.CompanyId);
+
+
+            modelBuilder.Entity<Phone>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+
+                entity.ToTable("phone");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title");
+
+                entity.Property(e => e.CompanyId)
+                    .HasColumnName("companyid");
+
+                entity.Property(e => e.Price)
+                    .HasColumnName("price");
+            });
+
+
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+
+                entity.ToTable("company");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title");
+
+                entity.Property(e => e.CEO)
+                    .HasColumnName("ceo");
+
+                entity.Property(e => e.Capital)
+                    .HasColumnName("capital");
+            });
         }
     }
 }

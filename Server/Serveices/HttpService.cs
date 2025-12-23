@@ -1,9 +1,11 @@
-﻿using Server.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Server.Serveices
@@ -30,77 +32,107 @@ namespace Server.Serveices
 
         private static async Task HandleRequest(HttpListenerContext ctx)
         {
-            string path = ctx.Request.Url.AbsolutePath.ToLower();
+            string path = ctx.Request.Url.AbsolutePath.ToLower().TrimEnd('/');
             string method = ctx.Request.HttpMethod;
+
+            Console.WriteLine($"PATH = '{path}', METHOD = '{method}'");
 
             using var db = new DbAppContext();
 
             if (path == "/api/phones" && method == "GET")
             {
-                var phones = db.Phones.ToList();
-                string json = System.Text.Json.JsonSerializer.Serialize(phones);
+                var phones = db.Phones
+                    .Include(p => p.CompanyEntity)
+                    .Select(p => new
+                    {
+                        p.Id,
+                        p.Title,
+                        p.Price,
+                        p.CompanyId,
+                        CompanyEntity = new
+                        {
+                            p.CompanyEntity.Id,
+                            p.CompanyEntity.Title
+                        }
+                    })
+                    .ToList();
+
+                string json = JsonSerializer.Serialize(phones);
                 await WriteResponse(ctx, json);
+                return;
             }
+
             else if (path == "/api/phones" && method == "POST")
             {
                 using var reader = new StreamReader(ctx.Request.InputStream);
                 string body = await reader.ReadToEndAsync();
-                var phone = System.Text.Json.JsonSerializer.Deserialize<Phone>(body);
+                var phone = JsonSerializer.Deserialize<Phone>(body);
 
                 db.Phones.Add(phone);
                 db.SaveChanges();
 
                 await WriteResponse(ctx, "{\"status\":\"added\"}");
+                return;
             }
             else if (path.StartsWith("/api/phones/") && method == "DELETE")
             {
-                int id = int.Parse(path.Replace("/api/phones/", ""));
-                var phone = db.Phones.Find(id);
-                if (phone != null)
+                if (int.TryParse(path.Replace("/api/phones/", ""), out int id))
                 {
+                    var phone = db.Phones.Find(id);
+                    if (phone == null)
+                    {
+                        await WriteResponse(ctx, "{\"error\":\"not found\"}", 404);
+                        return;
+                    }
+
                     db.Phones.Remove(phone);
                     db.SaveChanges();
                     await WriteResponse(ctx, "{\"status\":\"deleted\"}");
-                }
-                else
-                {
-                    await WriteResponse(ctx, "{\"error\":\"not found\"}", 404);
+                    return;
                 }
             }
             else if (path.StartsWith("/api/phones/") && method == "PUT")
             {
-                int id = int.Parse(path.Replace("/api/phones/", ""));
-
-                using var reader = new StreamReader(ctx.Request.InputStream);
-                string body = await reader.ReadToEndAsync();
-                var updatedPhone = System.Text.Json.JsonSerializer.Deserialize<Phone>(body);
-
-                var phone = db.Phones.Find(id);
-                if (phone == null)
+                if (int.TryParse(path.Replace("/api/phones/", ""), out int id))
                 {
-                    await WriteResponse(ctx, "{\"error\":\"not found\"}", 404);
+                    using var reader = new StreamReader(ctx.Request.InputStream);
+                    string body = await reader.ReadToEndAsync();
+                    var updatedPhone = JsonSerializer.Deserialize<Phone>(body);
+
+                    var phone = db.Phones.Find(id);
+                    if (phone == null)
+                    {
+                        await WriteResponse(ctx, "{\"error\":\"not found\"}", 404);
+                        return;
+                    }
+
+                    phone.Title = updatedPhone.Title;
+                    phone.Price = updatedPhone.Price;
+                    phone.CompanyId = updatedPhone.CompanyId;
+
+                    db.SaveChanges();
+                    await WriteResponse(ctx, "{\"status\":\"updated\"}");
                     return;
                 }
-
-                phone.CompanyId = updatedPhone.CompanyId;
-                phone.Title = updatedPhone.Title;
-                phone.Price = updatedPhone.Price;
-
-                db.SaveChanges();
-
-                await WriteResponse(ctx, "{\"status\":\"updated\"}");
             }
-            else if (path.StartsWith("/api/companies/") && method == "GET")
+            else if (path == "/api/companies" && method == "GET")
             {
-                var companies = db.Companies.ToList();
-                string json = System.Text.Json.JsonSerializer.Serialize(companies);
+                var companies = db.Companies
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Title
+                    })
+                    .ToList();
+
+                string json = JsonSerializer.Serialize(companies);
                 await WriteResponse(ctx, json);
+                return;
             }
             else
             {
                 await WriteResponse(ctx, "{\"error\":\"unknown route\"}", 404);
             }
-
         }
 
 

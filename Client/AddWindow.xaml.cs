@@ -33,6 +33,8 @@ namespace Client
             //PriceInput.Text = phone.Price.ToString();
             httpClient = http;
             mainWindow = owner;
+
+            _ = LoadCompanies();
         }
 
         public async void AddButtonClick(object sender, RoutedEventArgs e)
@@ -43,6 +45,8 @@ namespace Client
                 return;
             }
 
+            await httpClient.GetCompanies();
+
             await httpClient.AddPhones(new Phone
             {
                 Title = NameInput.Text,
@@ -52,6 +56,17 @@ namespace Client
             await (this.Owner as MainWindow).RefreshTable();
             this.Close();
         }
+
+
+        private async Task LoadCompanies()
+        {
+            var companies = await httpClient.GetCompanies();
+
+            CompanyInput.ItemsSource = companies;
+            CompanyInput.DisplayMemberPath = "Title";   
+            CompanyInput.SelectedValuePath = "Id";      
+        }
+
 
         private bool ValidateInput(out string errorMessage)
         {
@@ -82,6 +97,13 @@ namespace Client
                 errorMessage = "Цена должна быть больше нуля";
                 PriceInput.Focus();
                 PriceInput.SelectAll();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(CompanyInput.Text))
+            {
+                errorMessage = "Поле 'Компания' не может быть пустым";
+                CompanyInput.Focus();
                 return false;
             }
 

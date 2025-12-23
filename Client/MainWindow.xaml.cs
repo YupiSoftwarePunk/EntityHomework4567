@@ -43,7 +43,7 @@ namespace Client
             }
             else
             {
-                MessageBox.Show("Выберите элемент для изменения");
+                ShowErrorMessage("Выберите элемент для изменения");
             }
             await RefreshTable();
         }
@@ -92,7 +92,7 @@ namespace Client
 
             if (mainDataGridView.SelectedItem is Phone selected)
             {
-                httpService.DeletePhones(selected.Id);
+                await httpService.DeletePhones(selected.Id);
                 //await LoadPhones();
                 await RefreshTable();
             }
@@ -255,6 +255,7 @@ namespace Client
         {
             mainDataGridView.ItemsSource = null;
             var phones = await httpService.GetPhones();
+
             mainDataGridView.ItemsSource = phones;
         }
     }

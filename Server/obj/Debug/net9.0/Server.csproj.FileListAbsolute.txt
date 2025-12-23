@@ -112,3 +112,4 @@ C:\Users\Denis\Documents\projects C#\EntityHomework4567\Server\obj\Debug\net9.0\
 C:\Users\Denis\Documents\projects C#\EntityHomework4567\Server\obj\Debug\net9.0\Server.pdb
 C:\Users\Denis\Documents\projects C#\EntityHomework4567\Server\obj\Debug\net9.0\Server.genruntimeconfig.cache
 C:\Users\Denis\Documents\projects C#\EntityHomework4567\Server\obj\Debug\net9.0\ref\Server.dll
+C:\Users\Denis\Documents\projects C#\EntityHomework4567\Server\obj\Debug\net9.0\Server.sourcelink.json

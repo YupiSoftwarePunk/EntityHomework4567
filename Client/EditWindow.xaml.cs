@@ -59,6 +59,17 @@ namespace Client
 
 
 
+        //private async Task LoadCompanies()
+        //{
+        //    var companies = await httpClient.GetCompanies();
+
+        //    CompanyInput.ItemsSource = companies;
+        //    CompanyInput.DisplayMemberPath = "Title";
+        //    CompanyInput.SelectedValuePath = "Id";
+        //}
+
+
+
         private bool ValidateInput(out string errorMessage)
         {
             if (string.IsNullOrWhiteSpace(NameInput.Text))
@@ -88,6 +99,13 @@ namespace Client
                 errorMessage = "Цена должна быть больше нуля";
                 PriceInput.Focus();
                 PriceInput.SelectAll();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(CompanyInput.Text))
+            {
+                errorMessage = "Поле 'Компания' не может быть пустым";
+                CompanyInput.Focus();
                 return false;
             }
 

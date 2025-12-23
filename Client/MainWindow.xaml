@@ -22,7 +22,7 @@
                   FontSize="16" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                   Width="500">
             <DataGrid.Columns>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
