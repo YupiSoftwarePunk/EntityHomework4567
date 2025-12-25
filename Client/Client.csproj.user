@@ -8,5 +8,8 @@
     <Compile Update="EditWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="PhoneDetailsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

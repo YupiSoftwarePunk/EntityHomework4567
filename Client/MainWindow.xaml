@@ -21,6 +21,22 @@
                   Margin="0 10 0 0" Name="mainDataGridView"
                   FontSize="16" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                   Width="500">
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Подробнее" Click="DetailsClick"/>
+                    <MenuItem Header="Редактировать" Click="EditClick"/>
+                    <MenuItem Header="Удалить" Click="BinClick"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="DetailsClick"/>
+                </Style>
+            </DataGrid.Resources>
+
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
@@ -70,5 +86,13 @@
                            TextWrapping="Wrap" TextAlignment="Center"/>
             </Border>
         </StackPanel>
+
+        <Frame x:Name="MainFrame"
+               Grid.RowSpan="2"
+               Grid.ColumnSpan="2"
+               NavigationUIVisibility="Hidden"
+               Background="White"
+               Visibility="Collapsed"/>
+
     </Grid>
 </Window>
