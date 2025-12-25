@@ -28,8 +28,8 @@ namespace Client
             TitleField.Text = phone.Title; 
             CompanyField.Text = phone.CompanyEntity.Title; 
             PriceField.Text = phone.Price.ToString(); 
-            DescriptionField.Text = phone.Description; 
-            //PhoneImage.Source = new BitmapImage(new Uri(phone.Image));
+            DescriptionField.Text = phone.Description;
+            PhoneImage.Source = new BitmapImage(new Uri(phone.Image));
         }
 
 

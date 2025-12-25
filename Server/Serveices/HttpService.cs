@@ -49,6 +49,8 @@ namespace Server.Serveices
                         p.Title,
                         p.Price,
                         p.CompanyId,
+                        p.Description,
+                        p.Image,
                         CompanyEntity = new
                         {
                             p.CompanyEntity.Id,

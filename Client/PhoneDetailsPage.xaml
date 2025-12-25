@@ -26,26 +26,47 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
             <Button Template="{StaticResource RoundButtonTemplate}"
                 Background="#EEEEEE"
                 Width="50" Height="50"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Margin="0 0 0 10"
-                Click="BackClick">  
+                Click="BackClick">
                 <Image Source="/Resources/back.png" Width="30"/>
             </Button>
-            <StackPanel Grid.Row="1" Margin="20">
-                <Image x:Name="PhoneImage" Width="200" Height="200" Margin="0 0 0 20"/>
-                <TextBlock Text="Название:" FontWeight="Bold"/>
-                <TextBlock x:Name="TitleField" Margin="0 0 0 10"/>
-                <TextBlock Text="Компания:" FontWeight="Bold"/>
-                <TextBlock x:Name="CompanyField" Margin="0 0 0 10"/>
-                <TextBlock Text="Цена:" FontWeight="Bold"/>
-                <TextBlock x:Name="PriceField" Margin="0 0 0 10"/>
-                <TextBlock Text="Описание:" FontWeight="Bold"/>
-                <TextBlock x:Name="DescriptionField" TextWrapping="Wrap"/>
-            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="PhoneImage"
+                   Grid.Column="0"
+                   Width="250" Height="250"
+                   Margin="0 0 20 0"
+                   VerticalAlignment="Top"/>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                    <TextBlock Text="Название:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TitleField" Margin="0 0 0 10"/>
+
+                    <TextBlock Text="Компания:" FontWeight="Bold"/>
+                    <TextBlock x:Name="CompanyField" Margin="0 0 0 10"/>
+
+                    <TextBlock Text="Цена:" FontWeight="Bold"/>
+                    <TextBlock x:Name="PriceField" Margin="0 0 0 10"/>
+
+                    <TextBlock Text="Описание:" FontWeight="Bold"/>
+                    <TextBlock x:Name="DescriptionField"
+                           TextWrapping="Wrap"
+                           Margin="0 0 0 10"
+                           Width="400"/>
+                </StackPanel>
+
+            </Grid>
         </Grid>
     </Grid>
 </Page>
