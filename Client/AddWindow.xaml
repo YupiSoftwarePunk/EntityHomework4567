@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="Добавление" Height="400" Width="300">
+        Title="Добавление" Height="500" Width="350">
     <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="6*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
@@ -20,20 +20,30 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1">
-            <StackPanel Margin="10">
+            <StackPanel Margin="5">
                 <TextBlock Text="Название" Margin="5"/>
                 <TextBox x:Name="NameInput" Height="20"/>
             </StackPanel>
 
-            <StackPanel Margin="10">
+            <StackPanel Margin="5">
                 <TextBlock Text="Компания" Margin="5"/>
                 <ComboBox x:Name="CompanyInput" Height="20"
                           SelectedValuePath="Id"/>
             </StackPanel>
 
-            <StackPanel Margin="10">
+            <StackPanel Margin="5">
                 <TextBlock Text="Цена" Margin="5"/>
                 <TextBox x:Name="PriceInput" Height="20"/>
+            </StackPanel>
+
+            <TextBlock Text="Описание"/>
+            <TextBox x:Name="DescriptionInput" Margin="0 5" Height="60" TextWrapping="Wrap"/>
+
+            <TextBlock Text="Изображение"/>
+            <StackPanel Orientation="Horizontal" Margin="0 5">
+                <Button x:Name="SelectImageButton" Content="Выбрать"
+                        Click="SelectImageClick" Width="80"/>
+                <Image x:Name="PreviewImage" Width="60" Height="60" Margin="10 0"/>
             </StackPanel>
 
         </StackPanel>
@@ -41,7 +51,7 @@
         <StackPanel Grid.Row="2">
             <Button x:Name="AddButton" Click="AddButtonClick" Height="40"
             Content="Добавить" VerticalAlignment="Center" Width="150" 
-                    HorizontalAlignment="Center" Margin="20"/>
+                    HorizontalAlignment="Center" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>

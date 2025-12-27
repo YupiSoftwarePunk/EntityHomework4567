@@ -2,6 +2,7 @@
 using Client.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -25,6 +26,13 @@ namespace Client
         HttpClientService httpClient;
         private MainWindow mainWindow;
 
+        private readonly string imageFolder = System.IO.Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "Images");
+
+        private Microsoft.Win32.OpenFileDialog _imgDialog;
+        private string _selectedImagePath;
+
+
         public AddWindow(HttpClientService http, MainWindow owner)
         {
             InitializeComponent();
@@ -39,6 +47,25 @@ namespace Client
 
         public async void AddButtonClick(object sender, RoutedEventArgs e)
         {
+            if (!Directory.Exists(imageFolder))
+            {
+                Directory.CreateDirectory(imageFolder);
+            }
+
+            string finalImagePath = System.IO.Path.Combine(
+                imageFolder,
+                _imgDialog != null ? _imgDialog.SafeFileName : "noimage.jpg"
+            );
+
+            if (_imgDialog != null)
+            {
+                File.Copy(_imgDialog.FileName, finalImagePath, overwrite: true);
+            }
+
+            string description = string.IsNullOrWhiteSpace(DescriptionInput.Text)
+                ? "Описание отсутствует" : DescriptionInput.Text;
+
+
             if (!ValidateInput(out string errorMessage))
             {
                 mainWindow.ShowErrorMessage(errorMessage);
@@ -51,11 +78,27 @@ namespace Client
             {
                 Title = NameInput.Text,
                 CompanyId = (int)CompanyInput.SelectedValue,
-                Price = Convert.ToDecimal(PriceInput.Text)
+                Price = Convert.ToDecimal(PriceInput.Text),
+                Description = description,
+                Image = finalImagePath
             });
             await (this.Owner as MainWindow).RefreshTable();
             this.Close();
         }
+
+
+        private void SelectImageClick(object sender, RoutedEventArgs e)
+        {
+            _imgDialog = new Microsoft.Win32.OpenFileDialog();
+            _imgDialog.Filter = "Изображения (*.jpg;*.png)|*.jpg;*.png";
+
+            if (_imgDialog.ShowDialog() == true)
+            {
+                _selectedImagePath = _imgDialog.FileName;
+                PreviewImage.Source = new BitmapImage(new Uri(_selectedImagePath));
+            }
+        }
+
 
 
         private async Task LoadCompanies()
