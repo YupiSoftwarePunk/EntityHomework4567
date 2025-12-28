@@ -54,7 +54,9 @@ namespace Client
 
             string finalImagePath = System.IO.Path.Combine(
                 imageFolder,
-                _imgDialog != null ? _imgDialog.SafeFileName : "noimage.jpg"
+                _imgDialog != null
+                ? Guid.NewGuid().ToString() + System.IO.Path.GetExtension(_imgDialog.FileName) 
+                : "noimage.jpg"
             );
 
             if (_imgDialog != null)

@@ -96,8 +96,8 @@ namespace Client
                     File.Delete(_tempPhone.Image);
                 }
 
-
-                finalImagePath = System.IO.Path.Combine(imageFolder, _imgDialog.SafeFileName);
+                string uniqueName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(_imgDialog.FileName);
+                finalImagePath = System.IO.Path.Combine(imageFolder, uniqueName);
 
                 File.Copy(_imgDialog.FileName, finalImagePath, overwrite: true);
             }
