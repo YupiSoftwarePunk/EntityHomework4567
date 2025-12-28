@@ -12,6 +12,7 @@
     <None Remove="Resources\back.png" />
     <None Remove="Resources\bin.png" />
     <None Remove="Resources\edit.png" />
+    <None Remove="Resources\noimage.jpg" />
     <None Remove="Resources\Plus.png" />
   </ItemGroup>
 
@@ -19,6 +20,7 @@
     <Resource Include="Resources\back.png" />
     <Resource Include="Resources\bin.png" />
     <Resource Include="Resources\edit.png" />
+    <Resource Include="Resources\noimage.jpg" />
     <Resource Include="Resources\Plus.png" />
   </ItemGroup>
 

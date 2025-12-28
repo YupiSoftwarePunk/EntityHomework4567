@@ -1,6 +1,7 @@
 ﻿using Client.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,22 @@ namespace Client
             CompanyField.Text = phone.CompanyEntity.Title; 
             PriceField.Text = phone.Price.ToString(); 
             DescriptionField.Text = phone.Description;
-            PhoneImage.Source = new BitmapImage(new Uri(phone.Image));
+            if (File.Exists(phone.Image))
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = File.OpenRead(phone.Image))
+                {
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                }
+                PhoneImage.Source = bitmap;
+            }
+            //else
+            //{
+            //    PhoneImage = "Resources\noimage.jpg";
+            //}
         }
 
 

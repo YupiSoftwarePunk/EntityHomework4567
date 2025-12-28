@@ -83,12 +83,19 @@ namespace Client
                 return;
             }
 
+            string description = string.IsNullOrWhiteSpace(DescriptionInput.Text)
+                ? "Описание отсутствует" : DescriptionInput.Text;
+
             string finalImagePath = _tempPhone.Image;
 
             if (_imgDialog != null)
             {
-                if (File.Exists(_tempPhone.Image))
+                if (File.Exists(_tempPhone.Image) &&
+                    !System.IO.Path.GetFileName(_tempPhone.Image).Equals("noimage.jpg", StringComparison.OrdinalIgnoreCase))
+                {
                     File.Delete(_tempPhone.Image);
+                }
+
 
                 finalImagePath = System.IO.Path.Combine(imageFolder, _imgDialog.SafeFileName);
 
@@ -102,7 +109,7 @@ namespace Client
                 Title = NameInput.Text,
                 CompanyId = (int)CompanyInput.SelectedValue,
                 Price = Convert.ToDecimal(PriceInput.Text),
-                Description = DescriptionInput.Text,
+                Description = description,
                 Image = finalImagePath
             });
             await (this.Owner as MainWindow).RefreshTable();
@@ -183,19 +190,19 @@ namespace Client
                 return false;
             }
 
-            if (string.IsNullOrEmpty(DescriptionInput.Text))
-            {
-                errorMessage = "Поле 'Описание' не может быть пустым";
-                DescriptionInput.Focus();
-                return false;
-            }
+            //if (string.IsNullOrEmpty(DescriptionInput.Text))
+            //{
+            //    errorMessage = "Поле 'Описание' не может быть пустым";
+            //    DescriptionInput.Focus();
+            //    return false;
+            //}
 
-            if (string.IsNullOrEmpty(_selectedImagePath))
-            {
-                errorMessage = "Выберите изображение";
-                SelectImageButton.Focus();
-                return false;
-            }
+            //if (string.IsNullOrEmpty(_selectedImagePath))
+            //{
+            //    errorMessage = "Выберите изображение";
+            //    SelectImageButton.Focus();
+            //    return false;
+            //}
 
             errorMessage = string.Empty;
             return true;

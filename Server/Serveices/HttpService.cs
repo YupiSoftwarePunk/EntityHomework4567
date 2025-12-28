@@ -70,6 +70,12 @@ namespace Server.Serveices
                 string body = await reader.ReadToEndAsync();
                 var phone = JsonSerializer.Deserialize<Phone>(body);
 
+                if (string.IsNullOrWhiteSpace(phone.Image))
+                {
+                    phone.Image = "C:\\Users\\Denis\\Documents\\projects C#\\EntityHomework4567\\Server\\noimage.jpg";
+                }
+
+
                 db.Phones.Add(phone);
                 db.SaveChanges();
 
@@ -111,6 +117,14 @@ namespace Server.Serveices
                     phone.Title = updatedPhone.Title;
                     phone.Price = updatedPhone.Price;
                     phone.CompanyId = updatedPhone.CompanyId;
+                    phone.Description = updatedPhone.Description;
+
+                    if (string.IsNullOrWhiteSpace(updatedPhone.Image))
+                    {
+                        updatedPhone.Image = "C:\\Users\\Denis\\Documents\\projects C#\\EntityHomework4567\\Server\\noimage.jpg";
+                    }
+
+                    phone.Image = updatedPhone.Image;
 
                     db.SaveChanges();
                     await WriteResponse(ctx, "{\"status\":\"updated\"}");
